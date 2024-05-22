@@ -1,21 +1,18 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import useStore from "../hooks/useStore";
 
 const Home = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { toggleDarkMode, darkMode } = useStore();
 
   useEffect(() => {
-    if (isDarkMode) {
+    if (darkMode) {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
     }
-  }, [isDarkMode]);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+  }, [darkMode]);
 
   return (
     <div className="bg-bg-main dark:bg-primary-main text-primary-main dark:text-dark-primary-main p-4 min-h-screen flex flex-col">
