@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import useStore from "../hooks/useStore";
+import Button from "@/components/Button";
 
 const Home = () => {
   const { toggleDarkMode, darkMode } = useStore();
@@ -15,13 +16,15 @@ const Home = () => {
   }, [darkMode]);
 
   return (
-    <div className="bg-bg-main dark:bg-primary-main text-primary-main dark:text-dark-primary-main p-4 min-h-screen flex flex-col">
-      <button
-        onClick={toggleDarkMode}
-        className="bg-primary-main dark:bg-blue-dark text-white p-2 rounded"
+    <div className="bg-bg-main dark:bg-primary-main text-primary-main dark:text-dark-primary-main p-4 h-screen">
+      <Button
+        color="blue"
+        size="lg"
+        onClick={() => alert("Primary Button Clicked!")}
+        loading={true}
       >
-        Toggle Dark Mode
-      </button>
+        Primary Button
+      </Button>
     </div>
   );
 };
