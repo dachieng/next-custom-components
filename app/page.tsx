@@ -3,9 +3,15 @@
 import React, { useState, useEffect } from "react";
 import useStore from "../hooks/useStore";
 import Button from "@/components/Button";
+import Modal from "@/components/Modal";
 
 const Home = () => {
   const { toggleDarkMode, darkMode } = useStore();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleIsOpen = () => {
+    setIsOpen((prev) => !prev);
+  };
 
   useEffect(() => {
     if (darkMode) {
@@ -17,14 +23,18 @@ const Home = () => {
 
   return (
     <div className="bg-bg-main dark:bg-primary-main text-primary-main dark:text-dark-primary-main p-4 h-screen">
-      <Button
-        color="blue"
-        size="lg"
-        onClick={() => alert("Primary Button Clicked!")}
-        loading={true}
-      >
+      <Button color="blue" size="lg" onClick={toggleIsOpen}>
         Primary Button
       </Button>
+      <Modal
+        open={isOpen}
+        onClose={toggleIsOpen}
+        theme="dark"
+        variant="md"
+        hideCloseIcon={false}
+      >
+        <div className="p-4">this is a modal</div>
+      </Modal>
     </div>
   );
 };
