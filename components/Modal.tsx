@@ -7,6 +7,7 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
+import { Icon } from "@iconify/react";
 
 type ModalVariant = "xs" | "sm" | "md" | "lg" | "xl" | "xl2";
 
@@ -24,8 +25,8 @@ interface ModalProps {
 }
 
 const overlayBg: Record<ModalTheme, string> = {
-  light: "bg-black/10",
-  ["light-dark"]: "bg-black/50",
+  light: "bg-black/20",
+  "light-dark": "bg-black/50",
   dark: "bg-gray-700/70",
 };
 
@@ -49,7 +50,7 @@ const Modal: React.FC<ModalProps> = ({
   onClose,
 }) => (
   <Transition appear show={open} as={Fragment}>
-    <Dialog as="div" className="relative z-[99999]" onClose={onClose}>
+    <Dialog as="div" className="relative z-[9999]" onClose={onClose}>
       <TransitionChild
         as={Fragment}
         enter="transition duration-100 ease-out"
@@ -86,32 +87,17 @@ const Modal: React.FC<ModalProps> = ({
                 {!hideCloseIcon ? (
                   <button
                     type="button"
-                    className={`${
-                      showCloseText ? "bg-primary-main" : "bg-white"
-                    } ${
-                      showCloseText ? "rounded-md" : "rounded-full"
-                    } py-1 px-2 text-gray-500 hover:text-gray-600 focus:ring-2 focus:ring-primary-500 focus:outline-none`}
+                    className={`rounded-full bg-white py-1 px-2 text-gray-500 hover:text-gray-600 focus:ring-2 focus:ring-primary-500 focus:outline-none`}
                     onClick={onClose}
                     title="Close"
                     aria-label="close modal"
                     aria-hidden={hideCloseIcon}
                     aria-labelledby="close modal"
                   >
-                    <svg
-                      className="h-6 w-6"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
+                    <Icon
+                      style={{ fontSize: "1.2rem" }}
+                      icon="material-symbols:cancel-outline"
+                    />
                   </button>
                 ) : null}
               </div>
