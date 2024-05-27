@@ -3,16 +3,40 @@
 import React, { useState, useEffect } from "react";
 import Input from "@/components/Input";
 import { Icon } from "@iconify/react";
+import Dropdown from "@/components/Dropdown";
+
+const MenuItems: any[] = [
+  {
+    label: "Home",
+    value: "Home",
+  },
+  {
+    label: "About",
+    value: "About",
+  },
+  {
+    label: "Contact",
+    value: "Contact",
+  },
+];
 
 const Home = () => {
   const [values, setValues] = useState({
     name: "",
     email: "",
     amount: "",
+    option: "",
   });
+
+  const [menu, setMenu] = useState("");
 
   const handleChange = (data: any) => {
     setValues((prevInfo) => ({ ...prevInfo, ...data }));
+  };
+
+  const handleMenuChange = (value: string) => {
+    setMenu(value);
+    setValues((prevInfo) => ({ ...prevInfo, option: value }));
   };
 
   console.log("values", values);
@@ -34,7 +58,12 @@ const Home = () => {
           label="Name"
           type="text"
           name="name"
-          disabled
+        />
+        <Dropdown
+          selectedValue={menu}
+          defaultValue={menu}
+          options={MenuItems}
+          handleChange={handleMenuChange}
         />
       </div>
     </div>
