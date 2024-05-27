@@ -11,6 +11,7 @@ export interface InputProps
   required?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
+  placeholder?: string;
   value?: string | number | readonly string[];
   type?: React.HTMLInputTypeAttribute | "amount";
   name?: string;
@@ -74,7 +75,7 @@ const Input: React.FC<InputProps> = ({
             props.disabled
               ? "text-secondary-dark"
               : variant === "error"
-              ? "text-danger-600"
+              ? "text-danger-main"
               : variant === "success"
               ? "text-success-main"
               : "text-secondary-dark"
@@ -122,6 +123,7 @@ const Input: React.FC<InputProps> = ({
           <input
             name={name}
             id={id}
+            placeholder={props?.placeholder ?? ""}
             className={`block border-0 py-0.5 flex-1 outline-none text-secondary-dark text-sm rounded ${
               startIcon ? "" : "px-3"
             } ${

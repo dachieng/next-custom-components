@@ -52,6 +52,7 @@ const Home = () => {
           label="Email"
           type="text"
           name="email"
+          placeholder="Enter your email"
         />
         <Input
           value={values.name}
@@ -59,8 +60,19 @@ const Home = () => {
           label="Name"
           type="text"
           name="name"
+          placeholder="Enter your name"
+        />
+        <Input
+          value={values.amount}
+          onChange={(value: string) => handleChange({ amount: value })}
+          label="Amount"
+          type="amount"
+          name="amount"
+          placeholder="Enter amount"
         />
         <Dropdown<any>
+          disabled={false}
+          label="Select user"
           selectedValue={menu}
           defaultValue={menu}
           options={users}
@@ -68,13 +80,25 @@ const Home = () => {
           renderItem={(option) => (
             <div className="flex items-center">
               <img
-                className="w-8 h-8 rounded-full mr-2"
+                className="w-6 h-6 rounded-full mr-2"
                 src={option.avatar}
                 alt={option.name}
               />
-              <span>{option.name}</span>
+              <span className="text-sm">{option.name}</span>
             </div>
           )}
+          renderSelectedItem={(option) => (
+            <div className="flex items-center">
+              <img
+                className="w-5 h-5 rounded-full mr-2"
+                src={option.avatar}
+                alt={option.name}
+              />
+              <span className="text-sm">{option.name}</span>
+            </div>
+          )}
+          placeholder="Select an option"
+          clearable
         />
       </div>
     </div>

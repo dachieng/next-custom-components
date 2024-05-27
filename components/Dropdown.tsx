@@ -1,4 +1,4 @@
-import { Fragment, useState, ReactNode } from "react";
+import { Fragment, useState, ReactNode, useEffect } from "react";
 import {
   Menu,
   MenuButton,
@@ -8,7 +8,6 @@ import {
 } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
-//@ts-ignore
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
@@ -19,84 +18,156 @@ interface OptionProps<T> {
 }
 
 interface DropdownProps<T> {
+  placeholder?: string;
   defaultOption?: OptionProps<T>;
   defaultValue?: string;
   selectedValue?: T;
   options: OptionProps<T>[];
-  handleChange?: (value: T) => void;
+  handleChange?: (value: T | string) => void;
   renderItem: (option: OptionProps<T>, optionIndex?: number) => ReactNode;
+  renderSelectedItem?: (option: OptionProps<T>) => ReactNode;
   buttonClass?: string;
   menuClass?: string;
   itemClass?: string;
+  clearable?: boolean;
+  label?: string;
+  disabled?: boolean;
+  variant?: "primary" | "error" | "success";
 }
 
 const Dropdown = <T extends unknown>({
+  placeholder = "Select an option",
   defaultOption,
   defaultValue,
   selectedValue,
   options,
+  label,
   handleChange,
   renderItem,
+  renderSelectedItem,
   buttonClass = "",
   menuClass = "",
   itemClass = "",
+  clearable = false,
+  disabled = false,
+  variant,
 }: DropdownProps<T>) => {
-  const [currentValue, setCurrentValue] = useState(
-    selectedValue || defaultOption?.value || options[0].value
+  const [currentValue, setCurrentValue] = useState<T | string>(
+    selectedValue || defaultOption?.value || defaultValue || ""
   );
 
-  const onSelect = (value: T) => {
+  useEffect(() => {
+    if (selectedValue !== undefined) {
+      setCurrentValue(selectedValue);
+    } else if (defaultOption) {
+      setCurrentValue(defaultOption.value);
+    } else if (defaultValue) {
+      setCurrentValue(defaultValue);
+    }
+  }, [selectedValue, defaultOption, defaultValue]);
+
+  const onSelect = (value: T | string) => {
     setCurrentValue(value);
     handleChange?.(value);
   };
 
-  return (
-    <Menu as="div" className="relative inline-block text-right w-full">
-      <div>
-        <MenuButton
-          className={`w-full flex justify-between items-center rounded-md border border-secondary-light px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:border-secondary-dark ${buttonClass}`}
-        >
-          <span className="block">{defaultValue || String(currentValue)}</span>
-          <ChevronDownIcon
-            className="block -mr-1 ml-2 h-5 w-5"
-            aria-hidden="true"
-          />
-        </MenuButton>
-      </div>
+  const selectedOption = options.find(
+    (option) => option.value === currentValue
+  );
 
-      <Transition
-        as={Fragment}
-        enter="transition ease-out duration-100"
-        enterFrom="transform opacity-0 scale-95"
-        enterTo="transform opacity-100 scale-100"
-        leave="transition ease-in duration-75"
-        leaveFrom="transform opacity-100 scale-100"
-        leaveTo="transform opacity-0 scale-95"
-      >
-        <MenuItems
-          className={`origin-top-right absolute left-0 mt-2 w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none ${menuClass}`}
+  return (
+    <div>
+      {label ? (
+        <label
+          className={`block text-sm mb-1 ${
+            disabled
+              ? "text-secondary-dark"
+              : variant === "error"
+              ? "text-danger-main"
+              : variant === "success"
+              ? "text-success-main"
+              : "text-secondary-dark"
+          }`}
         >
-          <div className="py-1">
-            {options.map((option, index) => (
-              <MenuItem key={index}>
-                {({ active }) => (
-                  <div
-                    className={classNames(
-                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                      "block w-full text-left px-4 py-2 text-sm",
-                      itemClass
-                    )}
-                    onClick={() => onSelect(option.value)}
-                  >
-                    {renderItem(option, index)}
-                  </div>
-                )}
-              </MenuItem>
-            ))}
-          </div>
-        </MenuItems>
-      </Transition>
-    </Menu>
+          {label}
+        </label>
+      ) : null}
+      <Menu as="div" className="relative inline-block text-right w-full mb-2">
+        <div>
+          <MenuButton
+            disabled={disabled}
+            className={classNames(
+              "w-full flex justify-between items-center rounded-md border px-4 py-2 text-sm font-medium focus:outline-none focus:ring-0",
+              disabled
+                ? "bg-secondary-light border-secondary-light text-secondary-dark cursor-not-allowed"
+                : "bg-white border-secondary-light text-secondary-dark hover:bg-gray-50 focus:border-secondary-dark",
+              buttonClass
+            )}
+          >
+            <span className="block">
+              {selectedOption
+                ? renderSelectedItem
+                  ? renderSelectedItem(selectedOption)
+                  : selectedOption.label
+                : placeholder}
+            </span>
+            <ChevronDownIcon
+              className="block -mr-1 ml-2 h-5 w-5"
+              aria-hidden="true"
+            />
+          </MenuButton>
+        </div>
+
+        <Transition
+          as={Fragment}
+          enter="transition ease-out duration-100"
+          enterFrom="transform opacity-0 scale-95"
+          enterTo="transform opacity-100 scale-100"
+          leave="transition ease-in duration-75"
+          leaveFrom="transform opacity-100 scale-100"
+          leaveTo="transform opacity-0 scale-95"
+        >
+          <MenuItems
+            className={`origin-top-right absolute left-0 mt-2 w-full rounded-md shadow-sm bg-white ring-1 ring-black ring-opacity-5 focus:outline-none ${menuClass}`}
+          >
+            <div className="py-1">
+              {clearable && (
+                <MenuItem>
+                  {({ active }) => (
+                    <div
+                      className={classNames(
+                        active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                        "block w-full text-left px-4 py-2 text-sm",
+                        itemClass
+                      )}
+                      onClick={() => onSelect("")}
+                    >
+                      {placeholder ?? "Select an option"}
+                    </div>
+                  )}
+                </MenuItem>
+              )}
+              {options.map((option, index) => (
+                <MenuItem key={index}>
+                  {({ active }) => (
+                    <div
+                      className={classNames(
+                        active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                        "block w-full text-left px-4 py-2 text-sm",
+                        itemClass
+                      )}
+                      onClick={() => onSelect(option.value)}
+                    >
+                      {renderItem(option, index)}
+                    </div>
+                  )}
+                </MenuItem>
+              ))}
+            </div>
+          </MenuItems>
+        </Transition>
+      </Menu>
+    </div>
   );
 };
 
