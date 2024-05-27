@@ -2,9 +2,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Input from "@/components/Input";
-import { Icon } from "@iconify/react";
-import Dropdown from "@/components/Dropdown";
+
+import { Dropdown, Input } from "@/components";
 
 const users = [
   {
@@ -53,6 +52,7 @@ const Home = () => {
           type="text"
           name="email"
           placeholder="Enter your email"
+          required
         />
         <Input
           value={values.name}
@@ -61,6 +61,7 @@ const Home = () => {
           type="text"
           name="name"
           placeholder="Enter your name"
+          required
         />
         <Input
           value={values.amount}
@@ -69,6 +70,7 @@ const Home = () => {
           type="amount"
           name="amount"
           placeholder="Enter amount"
+          required
         />
         <Dropdown<any>
           disabled={false}
@@ -99,6 +101,7 @@ const Home = () => {
           )}
           placeholder="Select an option"
           clearable
+          aria-label="Select user dropdown"
         />
       </div>
     </div>
