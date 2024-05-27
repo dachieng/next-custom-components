@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -5,18 +6,18 @@ import Input from "@/components/Input";
 import { Icon } from "@iconify/react";
 import Dropdown from "@/components/Dropdown";
 
-const MenuItems: any[] = [
+const users = [
   {
-    label: "Home",
-    value: "Home",
+    value: "1",
+    name: "John Doe",
+    avatar: "https://picsum.photos/200",
+    phone: "123-456-7890",
   },
   {
-    label: "About",
-    value: "About",
-  },
-  {
-    label: "Contact",
-    value: "Contact",
+    value: "2",
+    name: "Jane Smith",
+    avatar: "https://picsum.photos/200",
+    phone: "987-654-3210",
   },
 ];
 
@@ -59,11 +60,21 @@ const Home = () => {
           type="text"
           name="name"
         />
-        <Dropdown
+        <Dropdown<any>
           selectedValue={menu}
           defaultValue={menu}
-          options={MenuItems}
+          options={users}
           handleChange={handleMenuChange}
+          renderItem={(option) => (
+            <div className="flex items-center">
+              <img
+                className="w-8 h-8 rounded-full mr-2"
+                src={option.avatar}
+                alt={option.name}
+              />
+              <span>{option.name}</span>
+            </div>
+          )}
         />
       </div>
     </div>
