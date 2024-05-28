@@ -100,6 +100,10 @@ const Dropdown = <T extends unknown>({
               "w-full flex justify-between items-center rounded-md border px-4 py-2 text-sm font-medium focus:outline-none focus:ring-0",
               disabled
                 ? "bg-secondary-light border-secondary-light text-secondary-dark cursor-not-allowed"
+                : variant === "error"
+                ? "bg-white border-danger-main text-secondary-dark"
+                : variant === "success"
+                ? "bg-white border-success-main text-secondary-dark"
                 : "bg-white border-secondary-light text-secondary-dark hover:bg-gray-50 focus:border-secondary-dark",
               buttonClass
             )}

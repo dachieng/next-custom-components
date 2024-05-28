@@ -73,6 +73,7 @@ const Home = () => {
           required
         />
         <Dropdown<any>
+          variant="success"
           disabled={false}
           label="Select user"
           selectedValue={menu}
