@@ -6,6 +6,13 @@ import React, { useState } from "react";
 import { Dropdown, Input, Spinner, TextArea } from "@/components";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getExpenses } from "@/services";
+import CustomCombobox from "@/components/Combox";
+
+const options = [
+  { id: 1, name: "Option 1", label: "Option 1" },
+  { id: 2, name: "Option 2", label: "Option 2" },
+  { id: 3, name: "Option 3", label: "Option 3" },
+];
 
 const users = [
   {
@@ -29,9 +36,16 @@ const Home = () => {
     amount: "",
     option: "",
     description: "",
+    vehicle: "",
   });
 
   const [menu, setMenu] = useState("");
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const handleComboboxChange = (value: any, option: any) => {
+    setSelectedOption(option);
+    setValues((prevInfo) => ({ ...prevInfo, vehicle: value }));
+  };
 
   const handleChange = (data: any) => {
     setValues((prevInfo) => ({ ...prevInfo, ...data }));
@@ -60,13 +74,29 @@ const Home = () => {
     initialPageParam: 1,
   });
 
-  const flattenedExpenses = data?.pages.flatMap((page) => page?.content) ?? [];
+  const flattenedExpenses =
+    data?.pages
+      .flatMap((page) => page?.content)
+      .map((item) => ({
+        id: item.id,
+        name: item.vehicle,
+        value: item.id,
+        avatar: item.image,
+      })) ?? [];
+
+  const renderOption = (option: any) => {
+    return <span className="text-yellow">{option.name}</span>;
+  };
+
+  const renderOptionString = (option: any) => {
+    return option ? option.name : "";
+  };
 
   if (isPending) {
     return <Spinner />;
   }
 
-  console.log(flattenedExpenses);
+  console.log("values", values);
 
   return (
     <div className="w-full h-screen bg-white p-4">
@@ -126,7 +156,7 @@ const Home = () => {
               <span className="text-sm">{option.name}</span>
             </div>
           )}
-          placeholder="Select an option"
+          placeholder="Select or search an option"
           clearable
           aria-label="Select user dropdown"
         />
@@ -136,6 +166,20 @@ const Home = () => {
           onChange={(value: string) => handleChange({ description: value })}
           name="description"
           placeholder="Enter description"
+        />
+        <CustomCombobox
+          options={flattenedExpenses}
+          defaultValue="Option 1"
+          placeholder="Select or search an option..."
+          renderOption={renderOption}
+          renderOptionString={renderOptionString}
+          onChange={handleComboboxChange}
+          getSelectedOption={(option) =>
+            console.log("Selected tehjdsd option:", option)
+          }
+          label="Vehicle"
+          helperText="Please select an option."
+          required
         />
       </div>
     </div>
