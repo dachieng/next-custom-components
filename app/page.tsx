@@ -3,7 +3,9 @@
 
 import React, { useState } from "react";
 
-import { Dropdown, Input, TextArea } from "@/components";
+import { Dropdown, Input, Spinner, TextArea } from "@/components";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { getExpenses } from "@/services";
 
 const users = [
   {
@@ -40,7 +42,31 @@ const Home = () => {
     setValues((prevInfo) => ({ ...prevInfo, option: value }));
   };
 
-  console.log("values", values);
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isPending,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["vehiclesExpensesSummary"],
+    queryFn: ({ pageParam = 1 }) => {
+      return getExpenses(pageParam);
+    },
+    getNextPageParam: (lastPage) => {
+      return lastPage?.hasNext ? (lastPage.currentPage ?? 0) + 1 : undefined;
+    },
+    initialPageParam: 1,
+  });
+
+  const flattenedExpenses = data?.pages.flatMap((page) => page?.content) ?? [];
+
+  if (isPending) {
+    return <Spinner />;
+  }
+
+  console.log(flattenedExpenses);
 
   return (
     <div className="w-full h-screen bg-white p-4">
