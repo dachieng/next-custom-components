@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from "react";
 
-import { Dropdown, Input } from "@/components";
+import { Dropdown, Input, TextArea } from "@/components";
 
 const users = [
   {
@@ -26,6 +26,7 @@ const Home = () => {
     email: "",
     amount: "",
     option: "",
+    description: "",
   });
 
   const [menu, setMenu] = useState("");
@@ -103,6 +104,13 @@ const Home = () => {
           placeholder="Select an option"
           clearable
           aria-label="Select user dropdown"
+        />
+        <TextArea
+          label="Description"
+          value={values.description}
+          onChange={(value: string) => handleChange({ description: value })}
+          name="description"
+          placeholder="Enter description"
         />
       </div>
     </div>

@@ -68,7 +68,7 @@ const Input: React.FC<InputProps> = ({
     inputType === "amount" ? "text" : inputType;
 
   return (
-    <div className={`flex-1 ${height} ${width}`}>
+    <div className={`my-2 flex-1 ${height} ${width}`}>
       {label ? (
         <label
           className={`block text-sm mb-1 ${
@@ -86,13 +86,13 @@ const Input: React.FC<InputProps> = ({
       ) : null}
 
       <div
-        className={`relative py-0 px-0 h-9 mb-2 rounded  ${
+        className={`relative py-0 px-0 h-9 rounded  ${
           props.disabled
             ? "border border-secondary-main bg-secondary-light"
             : "border border-secondary-light"
         } ${
           variant === "error"
-            ? "border-danger-600"
+            ? "border-danger-main"
             : variant === "success"
             ? "border-success-main"
             : "border-secondary-main"
@@ -160,7 +160,7 @@ const Input: React.FC<InputProps> = ({
       {helperText && variant !== "primary" && (
         <p
           className={`text-xs mt-1 leading-4 ${
-            variant === "success" ? "text-success-main" : "text-danger-600"
+            variant === "success" ? "text-success-main" : "text-danger-main"
           }`}
         >
           {helperText}

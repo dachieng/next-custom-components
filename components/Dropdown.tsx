@@ -33,6 +33,7 @@ interface DropdownProps<T> {
   label?: string;
   disabled?: boolean;
   variant?: "primary" | "error" | "success";
+  helperText?: string | React.ReactNode;
 }
 
 const Dropdown = <T extends unknown>({
@@ -51,6 +52,7 @@ const Dropdown = <T extends unknown>({
   clearable = false,
   disabled = false,
   variant,
+  helperText,
 }: DropdownProps<T>) => {
   const [currentValue, setCurrentValue] = useState<T | string>(
     selectedValue || defaultOption?.value || defaultValue || ""
@@ -76,7 +78,7 @@ const Dropdown = <T extends unknown>({
   );
 
   return (
-    <div>
+    <div className="my-2">
       {label ? (
         <label
           className={`block text-sm mb-1 ${
@@ -92,7 +94,7 @@ const Dropdown = <T extends unknown>({
           {label}
         </label>
       ) : null}
-      <Menu as="div" className="relative inline-block text-right w-full mb-2">
+      <Menu as="div" className="relative inline-block text-right w-full">
         <div>
           <MenuButton
             disabled={disabled}
@@ -132,7 +134,7 @@ const Dropdown = <T extends unknown>({
           leaveTo="transform opacity-0 scale-95"
         >
           <MenuItems
-            className={`origin-top-right absolute left-0 mt-2 w-full rounded-md shadow-sm bg-white ring-1 ring-black ring-opacity-5 focus:outline-none ${menuClass}`}
+            className={`origin-top-right absolute left-0 mt-2 w-full rounded-md shadow-sm bg-white ring-1 ring-black ring-opacity-5 z-50 focus:outline-none ${menuClass}`}
           >
             <div className="py-1">
               {clearable && (
@@ -140,7 +142,9 @@ const Dropdown = <T extends unknown>({
                   {({ active }) => (
                     <div
                       className={classNames(
-                        active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                        active
+                          ? "bg-secondary-light text-secondary-dark"
+                          : "text-secondary-dark",
                         "block w-full text-left px-4 py-2 text-sm",
                         itemClass
                       )}
@@ -156,7 +160,9 @@ const Dropdown = <T extends unknown>({
                   {({ active }) => (
                     <div
                       className={classNames(
-                        active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                        active
+                          ? "bg-gray-100 text-secondary-dark"
+                          : "text-secondary-dark",
                         "block w-full text-left px-4 py-2 text-sm",
                         itemClass
                       )}
@@ -171,6 +177,15 @@ const Dropdown = <T extends unknown>({
           </MenuItems>
         </Transition>
       </Menu>
+      {helperText && variant !== "primary" && (
+        <p
+          className={`text-xs mt-1 leading-4 ${
+            variant === "success" ? "text-success-main" : "text-danger-main"
+          }`}
+        >
+          {helperText}
+        </p>
+      )}
     </div>
   );
 };

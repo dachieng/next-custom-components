@@ -87,7 +87,7 @@ const Modal: React.FC<ModalProps> = ({
                 {!hideCloseIcon ? (
                   <button
                     type="button"
-                    className={`rounded-full bg-white py-1 px-2 text-gray-500 hover:text-gray-600 focus:ring-2 focus:ring-primary-500 focus:outline-none`}
+                    className={`rounded-full bg-white py-1 px-2 text-secondary-dark hover:text-secondary-dark focus:ring-2 focus:ring-primary-500 focus:outline-none`}
                     onClick={onClose}
                     title="Close"
                     aria-label="close modal"
