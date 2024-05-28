@@ -23,9 +23,6 @@ interface DropdownProps<T> {
   defaultValue?: string;
   selectedValue?: T;
   options: OptionProps<T>[];
-  handleChange?: (value: T | string) => void;
-  renderItem: (option: OptionProps<T>, optionIndex?: number) => ReactNode;
-  renderSelectedItem?: (option: OptionProps<T>) => ReactNode;
   buttonClass?: string;
   menuClass?: string;
   itemClass?: string;
@@ -34,6 +31,9 @@ interface DropdownProps<T> {
   disabled?: boolean;
   variant?: "primary" | "error" | "success";
   helperText?: string | React.ReactNode;
+  handleChange?: (value: T | string) => void;
+  renderItem: (option: OptionProps<T>, optionIndex?: number) => ReactNode;
+  renderSelectedItem?: (option: OptionProps<T>) => ReactNode;
 }
 
 const Dropdown = <T extends unknown>({

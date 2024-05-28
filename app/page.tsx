@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { Dropdown, Input, TextArea } from "@/components";
 
@@ -74,7 +74,6 @@ const Home = () => {
           required
         />
         <Dropdown<any>
-          variant="success"
           disabled={false}
           label="Select user"
           selectedValue={menu}
